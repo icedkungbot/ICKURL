@@ -29,13 +29,18 @@
         }
         #add {
             background-color: #008CBA;
-            padding: 10px 20px;
+        }
+        #copy {
+            background-color: #36f465;
+            border: none;
+            color: black;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
         }
         #delete {
             background-color: #f44336;
-        }
-        #copy {
-            background-color: #7ff76a;
         }
         .headerbar{
             display: flex;
@@ -55,13 +60,12 @@
             cursor: pointer;
         }
         
-
     </style>
     <div class="headerbar">
         <h2>Welcome, <b><%= username %></b></h2>
         <button id="logout" onclick="logout()">Logout</button>
     </div>
-    
+
     <form action="/add">
         <input type="submit" id="add" value="Add new url">
     </form>
@@ -81,17 +85,16 @@
                 <tr>
                     <td><a href="/<%= urls[i].shorten_url %>"><%= urls[i].shorten_url %></a></td>
                     <td><%= urls[i].original_url %></td>
-                    <td><%= isNaN(urls[i].clicked) %></td>
-                    <% const adTIME == isNaN() %>
-                    <td><%= urls[i].adsTime %> mins</td>
-                    
+                  <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
+                    <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
+                    <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
                     <td><%= new Date(urls[i].create_at) %></td>
                     <td>
+                        <button id="copy" onclick="copy('<%=urls[i].shorten_url%>')">Copy</button>
                         <form action="/delete" method="post">
                             <input type="hidden" name="shorten_url"  value="<%= urls[i].shorten_url %>">
                             <input type="submit" id="delete" value="Delete">
                         </form>
-                        <button id="copy" onclick="copy('<%= urls[i].shorten_url %>')">Copy</button>
                     </td>
                 </tr>
             <% } %>
@@ -101,7 +104,17 @@
             window.location.href = "/logout";
         }
         function copy(url){
-            navigator.clipboard.writeText(window.location.href + url);
+            var copyText = window.location.origin+ "/" + url;
+            navigator.clipboard.writeText(copyText);
+            console.log(copyText);
+            //change copy color and text after click
+            document.getElementById("copy").style.backgroundColor = "#008CBA";
+            document.getElementById("copy").innerHTML = "Copied";
+            //change back after 5 sec
+            setTimeout(() => {
+                document.getElementById("copy").style.backgroundColor = "#36f465";
+                document.getElementById("copy").innerHTML = "Copy";
+            }, 5000);
         }
     </script>
 </body>
