@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const router = express.Router();
 const ejs = require('ejs');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
@@ -28,9 +29,10 @@ app.use(sessions({
     resave: false 
 }));
 app.use(cookieParser());
+app.use(router)
 
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     if(req.session.access){
         res.redirect("/view")
     }else{
@@ -119,23 +121,23 @@ const user = {
 You can replace this section with MongoDB or other database to make your data private
 */
 
-app.post('/login',async (req, res) => {
+router.post('/login',async (req, res) => {
     //create express session 
     const username = req.body.username;
     const hashPassword = req.body.password;
     const check = await user.check(username, hashPassword, req, res);
 });
 
-app.get("/register", (req, res) => {
+router.get("/register", (req, res) => {
     res.render('register');
 })
 
-app.post("/createuser", (req, res) => {
+router.post("/createuser", (req, res) => {
     const {username , password} = req.body;
     user.create(username, password);
 })
 
-app.get("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
     const user = req.session.user;
     req.session = req.session.destroy();
     console.log(`User : ${user} has logged out!!`)
@@ -151,7 +153,7 @@ const accessCheck = (req, res, next) =>{
     }
 }
 
-app.get('/view', accessCheck, (req, res) => {
+router.get('/view', accessCheck, (req, res) => {
     const owner = req.session.user;
     fs.readFile('./redirect.json', 'utf-8', (err, data) => {
         if(err){
@@ -166,11 +168,11 @@ app.get('/view', accessCheck, (req, res) => {
     });
 });
 
-app.get('/add', accessCheck, (req, res) => {
+router.get('/add', accessCheck, (req, res) => {
     res.render('add');
 })
 
-app.post('/create', accessCheck, (req, res) => {
+router.post('/create', accessCheck, (req, res) => {
     const originalUrl = req.body.originalUrl;
     const shortenUrl = req.body.shortenUrl;
     const createAt = new Date();
@@ -209,7 +211,7 @@ app.post('/create', accessCheck, (req, res) => {
     });
 });
 
-app.post('/delete', accessCheck, (req, res) => {
+router.post('/delete', accessCheck, (req, res) => {
     const shortenUrl = req.body.shorten_url;
     console.log(`Want to delete ${shortenUrl}`)
     fs.readFile('./redirect.json', 'utf-8', (err, data) => {
@@ -231,12 +233,12 @@ app.post('/delete', accessCheck, (req, res) => {
     });
 });
 
-app.get('/url', (req, res) => {
+router.get('/url', (req, res) => {
     const desurl = "https://google.com";
     res.render('url', {des_url:desurl});
 });
 
-app.get('/:shortUrl', (req, res) => {
+router.get('/:shortUrl', (req, res) => {
     const shortUrl = req.params.shortUrl;
     fs.readFile('./redirect.json', 'utf-8', (err, data) => {
         if(err){
