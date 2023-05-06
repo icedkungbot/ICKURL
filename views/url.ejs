@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("header", {NOW_TITLE:"Redirecting"}) %>
+<body>
+    <style>
+        body{
+            background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+background-size: 1800% 1800%;
+
+
+-webkit-animation: rainbow 3s ease infinite;
+-z-animation: rainbow 3s ease infinite;
+-o-animation: rainbow 3s ease infinite;
+  animation: rainbow 3s ease infinite;}
+        
+@-webkit-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-moz-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-o-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+        
+        .center{
+            text-align: center;
+            width:500px;
+            
+            margin:20% auto;
+        }
+        iframe{
+            width: 25.195rem;
+            height: 15rem;
+            aspect-ratio:inherit;
+        }
+    </style>
+    <div class="center">
+        <h1>ICKURL</h1>
+        <h2>Destination : <%= des_url %> </h2>
+        <p id="progressBar">Redirecting in : </p>
+        <iframe src="<%= des_url %>" frameborder="0"></iframe>
+    </div>
+    <script>
+        //redirect countdown
+    document.addEventListener("DOMContentLoaded", ()=>{
+        var time = 5;
+        var downloadTimer = setInterval(function(){
+            if(time <= 0){ 
+                clearInterval(downloadTimer);
+                window.location.href = "<%= des_url %>"
+            } 
+            document.getElementById("progressBar").innerText= "Redirecting in : " + time;
+            time -=1; 
+        }, 1000); 
+    })
+        
+    </script>
+</body>
+</html>

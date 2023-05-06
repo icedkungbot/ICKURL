@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('header', {NOW_TITLE:"View URL"}) %>
+<body>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #add {
+            background-color: #008CBA;
+        }
+        #delete {
+            background-color: #f44336;
+        }
+        .headerbar{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        #logout{
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 30px;
+            cursor: pointer;
+        }
+        
+
+    </style>
+    <div class="headerbar">
+        <h2>Welcome, <b><%= username %></b></h2>
+        <button id="logout" onclick="logout()">Logout</button>
+    </div>
+    
+    <form action="/add">
+        <input type="submit" id="add" value="Add new url">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Shorten URL</th>
+                <th>Original URL</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < urls.length; i++) { %>
+                <tr>
+                    <td><a href="/<%= urls[i].shorten_url %>"><%= urls[i].shorten_url %></a></td>
+                    <td><%= urls[i].original_url %></td>
+                    <td><%= new Date(urls[i].create_at) %></td>
+                    <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="shorten_url"  value="<%= urls[i].shorten_url %>">
+                            <input type="submit" id="delete" value="Delete">
+                        </form>
+                </tr>
+            <% } %>
+    </table>
+    <script>
+        function logout(){
+            window.location.href = "/logout";
+        }
+    </script>
+</body>
+</html>

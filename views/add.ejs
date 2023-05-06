@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('header', {NOW_TITLE:"ADD"}) %>
+<body>
+    <style>
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-top: 10px;
+        }
+        input[type=url] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #checkbox1{
+            background-color: white;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        
+    </style>
+    <h2>Add new url</h2>
+    <form action="/create" method="post">
+        <label for="originalUrl">Original URL</label>
+        <input type="url" name="originalUrl" id="originalUrl">
+        <label for="shortenUrl">Shorten URL</label>
+        <input type="text" maxlength="12" name="shortenUrl" id="shortenUrl">
+        <input type="checkbox" id="checkbox1"><span>Random</span>
+
+        <!-- display how short url will be -->
+        <input type="url" name="futureURL" id="futureURL" value="" hidden readonly>        
+        <input type="submit" value="Create URL">
+    </form>
+
+    <script>
+        //paste clipboard to input when click on input
+        document.addEventListener("DOMContentLoaded", async function() {
+        try{
+            const permission = await navigator.permissions.query({
+            name: "clipboard-read",
+            });
+            if(permission.state == "denied"){
+                alert("Can't read your clipboard");
+                return;
+            }
+            const clipboardContents = await navigator.clipboard.readText();
+            switch (true){
+                case clipboardContents.startsWith("http://"):
+                    document.getElementById("originalUrl").value = clipboardContents;
+                case clipboardContents.startsWith("https://"):
+                    document.getElementById("originalUrl").value = clipboardContents;
+                default:
+                    document.getElementById("originalUrl").placeholder = "Paste your url here!";
+            }
+            console.log(clipboardContents)
+        }catch{
+            console.log("Permission Error")
+        }
+        });
+
+        //display future url update every time when user type in input shorten url
+        const shortHandler = () => {
+            if (document.getElementById("shortenUrl").value == "") {
+                document.getElementById("futureURL").hidden = true;
+            }else{
+                document.getElementById("futureURL").hidden = false;
+            document.getElementById("futureURL").value = window.location.origin + "/" + document.getElementById("shortenUrl").value;
+            }
+        }
+               //generate random key
+        document.getElementById("checkbox1").addEventListener("change", (event)=>{
+        //create random short url link
+        if(event.currentTarget.checked){
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            let random = "";
+            for (var i = 0, n = charset.length; i < 5; ++i) { random +=charset.charAt(Math.floor(Math.random() * n)); }
+                document.getElementById("shortenUrl").value = random;
+                shortHandler();
+            }else{
+                document.getElementById("shortenUrl").value = "";
+                shortHandler();
+            }
+        })
+        document.getElementById("shortenUrl").addEventListener("keyup", shortHandler,false);
+        document.getElementById("shortenUrl").addEventListener("change", shortHandler,false);
+        
+    </script>
+</body>
+</html>

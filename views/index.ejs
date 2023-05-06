@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('header', {NOW_TITLE:'HOMEPAGE'}) %>
+<body>
+    <style>
+        h1,h2,p {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=password] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 50%;
+        }
+        #register {
+            background-color: #ffc107;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 50%;
+        }
+    </style>
+    <h1>Welcome to ICKURL</h1>
+    <h2>Login to manage your shorten url</h>
+    <p>Enter username and password to login</p>
+    <div class="formStyle">
+    <form action="/login" method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <input type="submit" value="Login">
+        
+    </form>
+        <button id="register" onclick="goRegister()">Register here!</button>
+    </div>
+    
+    <script>
+        const goRegister = () =>{
+            window.location.href = '/register';
+        }
+        //user ajax to send login to server and wait for response
+        const ajaxOpt ={
+            
+        }
+    </script>
+</body>
+</html>
