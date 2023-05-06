@@ -106,10 +106,11 @@
         function copy(url, id){
             var copyText = window.location.origin+ "/" + url;
             navigator.clipboard.writeText(copyText);
+            console.log(id)
             console.log(copyText);
             //change copy color and text after click
-            document.getElementById("copy").style.backgroundColor = "#008CBA";
-            document.getElementById("copy").innerHTML = "Copied";
+            document.getElementById(id).style.backgroundColor = "#008CBA";
+            document.getElementById(id).innerHTML = "Copied";
             //change back after 5 sec
             setTimeout(() => {
                 document.getElementById(id).style.backgroundColor = "#36f465";
