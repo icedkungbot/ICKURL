@@ -88,7 +88,7 @@
                   <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
                     <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
                     <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
-                    <td><%= new Date(urls[i].create_at) %></td>
+                    <td><%= new Date(urls[i].create_at).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}) %></td>
                     <td>
                         <button id="copy_<%=i%>_<%=urls[i].shorten_url%>" onclick="copy('<%=urls[i].shorten_url%>', 'copy_<%=i%>_<%=urls[i].shorten_url%>')">Copy</button>
                         <form action="/delete" method="post">
