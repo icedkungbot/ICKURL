@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 const ejs = require('ejs');
 const cors = require('cors');
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env['PORT']);
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -11,11 +11,11 @@ dotenv.config();
 const sessions = require('express-session');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-const saltRound = process.env.SALTROUND || 10;
+const saltRound = parseInt(process.env['SALTROUND']);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "/views")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -23,7 +23,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 const sevenDay = 1000 * 60 * 60 * 24 * 7;
 
 app.use(sessions({
-    secret: process.env.SECRET || "URLSHORTHENER",
+    secret: process.env['SECRET'],
     saveUninitialized:true,
     cookie: { maxAge: oneDay},
     resave: false 
@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
 You can replace this section with MongoDB or other database to make your data private
 */
 const user = {
-    create:(username, password)=>{
+    create:(username, password,req,res)=>{
         //save username and password to user.json
         fs.readFile('./user.json', 'utf-8', (err, data) => {
             if(err){
@@ -54,7 +54,7 @@ const user = {
                 //check is this username is exits
                 const result = userJsonFile.find((item) => {
                     if(item.username == username){
-                        res.json({status:"err", msg:"Username is already exits!"})
+                       return res.json({status:"err", msg:"Username is already exits!"});
                     }else{
                         const newUser = {
                             uid: userJsonFile.length + 1,
@@ -102,13 +102,13 @@ const user = {
                         //for ajax response
                         //res.json({status:"ok", msg:"Login successful"})
                     }else{
-                        console.log("unable to login")
+                        console.log("Password do not match!!!")
                         res.redirect("/")
                         //for ajax response
                         //res.json({status:"err", msg:"Password incorrect!"})
                     }
                 }else{
-                    console.log("unable to login")
+                    console.log("User not found!!!")
                     res.redirect("/")
                     //for ajax response
                     //res.json({status:"err", msg:"User not found!"})
@@ -134,7 +134,7 @@ router.get("/register", (req, res) => {
 
 router.post("/createuser", (req, res) => {
     const {username , password} = req.body;
-    user.create(username, password);
+    user.create(username, password,req,res);
 })
 
 router.get("/logout", (req, res) => {
@@ -182,7 +182,9 @@ router.post('/create', accessCheck, (req, res) => {
         original_url: originalUrl,
         shorten_url: shortenUrl,
         create_at: createAt,
-        owner: owner
+        owner: owner,
+        clicked:0,
+        adsTime:0
     };
     fs.readFile('./redirect.json', 'utf-8', (err, data) => {
         if (err) {
@@ -246,9 +248,20 @@ router.get('/:shortUrl', (req, res) => {
         }else{
             const redirectJsonFile = JSON.parse(data);
             const result = redirectJsonFile.find((item) => {
-                return item.shorten_url == shortUrl;
+                if(item.shorten_url == shortUrl){
+                    item.clicked++;
+                    item.adsTime = item.clicked * 500;
+                return true;
+                }
             });
             if(result){
+                fs.writeFile('./redirect.json', JSON.stringify(redirectJsonFile), (err) => {
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log('update clicked successfully');
+                    }
+                });
                 res.render('url', {des_url:result.original_url});
             }else{
                 res.redirect('/');

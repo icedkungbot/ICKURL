@@ -38,7 +38,7 @@ background-size: 1800% 1800%;
             text-align: center;
             width:500px;
             
-            margin:20% auto;
+            margin:5% auto;
         }
         iframe{
             width: 25.195rem;
@@ -49,8 +49,8 @@ background-size: 1800% 1800%;
     </style>
     <div class="center">
         <h1>ICKURL</h1>
-        <h2>Destination : <%= des_url %> </h2>
-        <p id="progressBar">Redirecting in : </p>
+        <h2>Travelling to : <%= des_url %> </h2>
+        <p id="progressBar">Travelling in : </p>
         <iframe src="<%= des_url %>" frameborder="0"></iframe>
     </div>
     <script>
@@ -62,7 +62,7 @@ background-size: 1800% 1800%;
                 clearInterval(downloadTimer);
                 window.location.href = "<%= des_url %>"
             } 
-            document.getElementById("progressBar").innerText= "Redirecting in : " + time;
+            document.getElementById("progressBar").innerText= "Travelling in : " + time;
             time -=1; 
         }, 1000); 
     })

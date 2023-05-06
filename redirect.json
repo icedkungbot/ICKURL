@@ -1,8 +1,1 @@
-[
-  {
-    "original_url": "https://www.example.com",
-    "shorten_url": "example",
-    "create_at": "2023-05-06T09:27:26.024Z",
-    "owner": "yourname"
-  }
-]
+[{"original_url":"https://www.example.com","shorten_url":"example","create_at":"2023-05-06T09:27:26.024Z","owner":"yourname"},{"original_url":"https://www.iamickdev.com","shorten_url":"www","create_at":"2023-05-06T10:52:29.076Z","owner":"ickdev","clicked":3,"adsTime":1500},{"original_url":"https://www.iamickdev.com","shorten_url":"6VoBl","create_at":"2023-05-06T10:52:36.332Z","owner":"ickdev","clicked":1,"adsTime":500},{"original_url":"https://ickurl.arnonsang-ngern.repl.co/www3","shorten_url":"www3","create_at":"2023-05-06T12:14:28.381Z","owner":"ickdev","clicked":51,"adsTime":25500},{"original_url":"https://ickurl.arnonsang-ngern.repl.co/www","shorten_url":"TDRsF","create_at":"2023-05-06T12:19:04.084Z","owner":"ickdev","clicked":0,"adsTime":0}]

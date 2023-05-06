@@ -66,6 +66,8 @@
             <tr>
                 <th>Shorten URL</th>
                 <th>Original URL</th>
+                <th>Clicked</th>
+                <th>Ads Time Spend</th>
                 <th>Created At</th>
                 <th>Action</th>
             </tr>
@@ -75,6 +77,9 @@
                 <tr>
                     <td><a href="/<%= urls[i].shorten_url %>"><%= urls[i].shorten_url %></a></td>
                     <td><%= urls[i].original_url %></td>
+                  <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
+                    <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
+                    <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
                     <td><%= new Date(urls[i].create_at) %></td>
                     <td>
                         <form action="/delete" method="post">
