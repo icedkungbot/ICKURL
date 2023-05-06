@@ -30,7 +30,7 @@
         #add {
             background-color: #008CBA;
         }
-        #copy {
+        .copy {
             background-color: #36f465;
             border: none;
             color: black;
@@ -90,7 +90,7 @@
                     <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
                     <td><%= new Date(urls[i].create_at).toLocaleString("en-US", {timeZone: "Asia/Bangkok"}) %></td>
                     <td>
-                        <button id="copy_<%=i%>_<%=urls[i].shorten_url%>" onclick="copy('<%=urls[i].shorten_url%>', 'copy_<%=i%>_<%=urls[i].shorten_url%>')">Copy</button>
+                        <button class="copy" id="copy_<%=i%>_<%=urls[i].shorten_url%>" onclick="copy('<%=urls[i].shorten_url%>', 'copy_<%=i%>_<%=urls[i].shorten_url%>')">Copy</button>
                         <form action="/delete" method="post">
                             <input type="hidden" name="shorten_url"  value="<%= urls[i].shorten_url %>">
                             <input type="submit" id="delete" value="Delete">
