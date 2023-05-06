@@ -90,7 +90,7 @@
                     <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
                     <td><%= new Date(urls[i].create_at) %></td>
                     <td>
-                        <button id="copy" onclick="copy('<%=urls[i].shorten_url%>')">Copy</button>
+                        <button id="copy_<%=i%>_<%=urls[i].shorten_url%>" onclick="copy('<%=urls[i].shorten_url%>', 'copy_<%=i%>_<%=urls[i].shorten_url%>')">Copy</button>
                         <form action="/delete" method="post">
                             <input type="hidden" name="shorten_url"  value="<%= urls[i].shorten_url %>">
                             <input type="submit" id="delete" value="Delete">
@@ -103,7 +103,7 @@
         function logout(){
             window.location.href = "/logout";
         }
-        function copy(url){
+        function copy(url, id){
             var copyText = window.location.origin+ "/" + url;
             navigator.clipboard.writeText(copyText);
             console.log(copyText);
@@ -112,8 +112,8 @@
             document.getElementById("copy").innerHTML = "Copied";
             //change back after 5 sec
             setTimeout(() => {
-                document.getElementById("copy").style.backgroundColor = "#36f465";
-                document.getElementById("copy").innerHTML = "Copy";
+                document.getElementById(id).style.backgroundColor = "#36f465";
+                document.getElementById(id).innerHTML = "Copy";
             }, 5000);
         }
     </script>
