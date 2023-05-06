@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 const ejs = require('ejs');
 const cors = require('cors');
-const port = parseInt(process.env['PORT']);
+const port = process.env.PORT || parseInt(process.env['PORT']);
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -11,7 +11,7 @@ dotenv.config();
 const sessions = require('express-session');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-const saltRound = parseInt(process.env['SALTROUND']);
+const saltRound = parseInt(process.env.SALTROUND) || parseInt(process.env['SALTROUND']);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -23,7 +23,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 const sevenDay = 1000 * 60 * 60 * 24 * 7;
 
 app.use(sessions({
-    secret: process.env['SECRET'],
+    secret: process.env.SECRET || process.env['SECRET'],
     saveUninitialized:true,
     cookie: { maxAge: oneDay},
     resave: false 
