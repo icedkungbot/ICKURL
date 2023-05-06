@@ -29,9 +29,13 @@
         }
         #add {
             background-color: #008CBA;
+            padding: 10px 20px;
         }
         #delete {
             background-color: #f44336;
+        }
+        #copy {
+            background-color: #7ff76a;
         }
         .headerbar{
             display: flex;
@@ -77,21 +81,27 @@
                 <tr>
                     <td><a href="/<%= urls[i].shorten_url %>"><%= urls[i].shorten_url %></a></td>
                     <td><%= urls[i].original_url %></td>
-                  <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
-                    <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
-                    <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
+                    <td><%= isNaN(urls[i].clicked) %></td>
+                    <% const adTIME == isNaN() %>
+                    <td><%= urls[i].adsTime %> mins</td>
+                    
                     <td><%= new Date(urls[i].create_at) %></td>
                     <td>
                         <form action="/delete" method="post">
                             <input type="hidden" name="shorten_url"  value="<%= urls[i].shorten_url %>">
                             <input type="submit" id="delete" value="Delete">
                         </form>
+                        <button id="copy" onclick="copy('<%= urls[i].shorten_url %>')">Copy</button>
+                    </td>
                 </tr>
             <% } %>
     </table>
     <script>
         function logout(){
             window.location.href = "/logout";
+        }
+        function copy(url){
+            navigator.clipboard.writeText(window.location.href + url);
         }
     </script>
 </body>
