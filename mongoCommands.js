@@ -172,7 +172,7 @@ const redirectURL = {
                     await client.connect();
                     const isExits = await client.db("account").collection("redirect").findOne({shorten_url:shortenUrl});
                     if(isExits == null){
-                        return res.json({status:"err", msg:"Shorten URL is not exits!"})
+                        return res.redirect("/");
                     }else{
                         isExits.clicked += 1;
                         isExits.adsTime = isExits.clicked * 5;
