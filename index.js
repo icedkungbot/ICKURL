@@ -110,7 +110,7 @@ router.get('/:shortenUrl',async (req, res) => {
     const shortenUrl = req.params.shortenUrl;
     const des_url = await redirectURL.redirect(shortenUrl, req, res);
     if(des_url){
-        res.render('redirect', { des_url: des_url });
+        res.render('url', { des_url: des_url });
     }else{
         res.json({ status: "err", msg: "Something went wrong, URL is not exits!!" });
     }
