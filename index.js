@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/views")));
 app.use(cookieParser());
-app.use(router)
+
 
 const saltRound = process.env.SALTROUND || 10;
 const port = process.env.PORT || 5001;
@@ -34,15 +34,19 @@ app.use(sessions({
     cookie: { maxAge: oneDay},
     resave: false 
 }));
+app.use(router)
+
 const { User, redirectURL } = require('./mongoCommands');
 
 router.get('/', (req, res, next) => {
+    console.log("index");
     res.render('index');
     next();
     () => {if(req.session.access) return res.redirect('/view');}
 });
   
 router.post('/login', (req, res) => {
+    console.log("login");
     const { username, password } = req.body;
     User.login(username, password, req, res);
 });
