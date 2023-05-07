@@ -112,7 +112,7 @@ router.get('/:shortenUrl',async (req, res) => {
     if(des_url){
         res.render('url', { des_url: des_url });
     }else{
-        res.json({ status: "err", msg: "Something went wrong, URL is not exits!!" });
+        res.redirect("/");
     }
 });
 
