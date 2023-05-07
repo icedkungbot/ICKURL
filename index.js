@@ -22,9 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/views")));
 app.use(cookieParser());
-app.use(router)
 
-const saltRound = process.env.SALTROUND || 10;
+
+const saltRound = parseInt(process.env.SALTROUND) || 10;
 const port = process.env.PORT || 5001;
 const oneDay = 1000 * 60 * 60 * 24;
 const sevenDay = 1000 * 60 * 60 * 24 * 7;
@@ -34,17 +34,19 @@ app.use(sessions({
     cookie: { maxAge: oneDay},
     resave: false 
 }));
+app.use(router)
+
 const { User, redirectURL } = require('./mongoCommands');
 
-router.get('/', (req, res) => {
-    if(req.session.access){
-        res.redirect("/view")
-    }else{
-        res.render('index');
-    }
+router.get('/', (req, res, next) => {
+    console.log("index");
+    res.render('index');
+    next();
+    () => {if(req.session.access) return res.redirect('/view');}
 });
   
 router.post('/login', (req, res) => {
+    console.log("login");
     const { username, password } = req.body;
     User.login(username, password, req, res);
 });
@@ -85,9 +87,12 @@ router.get('/view', accessCheck, (req, res) => {
     });
 });
 
-router.post('/add', accessCheck, (req, res) => {
+router.get('/add', accessCheck, (req, res) => {
+   res.render('add');
+});
+
+router.post('/create', accessCheck, (req, res) => {
     const { originalUrl, shortenUrl } = req.body;
-    const user = req.session.user;
     redirectURL.create(originalUrl, shortenUrl, req, res);
 });
 
@@ -101,9 +106,14 @@ router.post('/update', accessCheck, (req, res) => {
     redirectURL.update(originalUrl, shortenUrl, req, res);
 });
 
-router.get('/:shortenUrl', (req, res) => {
+router.get('/:shortenUrl',async (req, res) => {
     const shortenUrl = req.params.shortenUrl;
-    redirectURL.redirect(shortenUrl, req, res);
+    const des_url = await redirectURL.redirect(shortenUrl, req, res);
+    if(des_url){
+        res.render('redirect', { des_url: des_url });
+    }else{
+        res.json({ status: "err", msg: "Something went wrong, URL is not exits!!" });
+    }
 });
 
 const server = app.listen(port, () => {
