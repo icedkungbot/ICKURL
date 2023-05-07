@@ -37,8 +37,12 @@ app.use(sessions({
 const { User, redirectURL } = require('./mongoCommands');
 
 router.get('/', (req, res) => {
-    if(req.session.access){
-        res.redirect("/view")
+    if(req.session.access != undefined){
+        if(req.session.access){
+            res.redirect("/view")
+        }else{
+            res.render('index');
+        }
     }else{
         res.render('index');
     }
