@@ -39,7 +39,7 @@ const { User, redirectURL } = require('./mongoCommands');
 router.get('/', (req, res, next) => {
     res.render('index');
     next();
-    () => if(req.session.access) return res.redirect('/view');
+    () => {if(req.session.access) return res.redirect('/view');}
 });
   
 router.post('/login', (req, res) => {
