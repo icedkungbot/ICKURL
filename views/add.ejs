@@ -102,9 +102,11 @@
             let random = "";
             for (var i = 0, n = charset.length; i < 5; ++i) { random +=charset.charAt(Math.floor(Math.random() * n)); }
                 document.getElementById("shortenUrl").value = random;
+                document.getElementById("shortenUrl").readonly = true;
                 shortHandler();
             }else{
                 document.getElementById("shortenUrl").value = "";
+                document.getElementById("shortenUrl").readonly = false;
                 shortHandler();
             }
         })
