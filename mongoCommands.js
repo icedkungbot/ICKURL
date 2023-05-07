@@ -3,7 +3,7 @@ const {
 } = require("mongodb");
 // Replace the uri string with your connection string.
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false";
-const client = MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const bcrypt = require('bcrypt');
 const saltRound = process.env.SALTROUND || 10;
 
