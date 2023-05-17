@@ -92,6 +92,7 @@
                     <td><%= urls[i].title %></td>
                     <td><%= urls[i].desc %></td>
                     <td><img src="<%= urls[i].img %>" alt="urlimg" width="50px" height="50px"></td>
+                    <td><%= urls[i].r_time %></td>
                   <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
                     <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
                     <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>
