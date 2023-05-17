@@ -92,21 +92,34 @@ router.get('/add', accessCheck, (req, res) => {
 });
 
 router.post('/create', accessCheck, (req, res) => {
-    const { originalUrl, shortenUrl, title, desc, img, r_time } = req.body;
-    if(!title){
+    const { originalUrl, shortenUrl } = req.body;
+    let title;
+    let desc;
+    let img;
+    let r_time;
+    
+    if(!req.body.title){
         title = "ICKURL";
+    }else{
+        title = req.body.title;
     }
 
-    if(!desc){
+    if(!req.body.desc){
         desc = "Forever free url shortener for your sharing | Made with love by ICKDEV";
+    }else{
+        desc = req.body.desc;
     }
 
-    if(!img){
+    if(!req.body.img){
         img = "https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png";
+    }else{
+        img = req.body.img;
     }
 
-    if(!r_time){
+    if(!req.body.r_time){
         r_time = 0;
+    }else{
+        r_time = req.body.r_time;
     }
 
     redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
