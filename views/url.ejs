@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include("header", {NOW_TITLE:"Short URL"}) %>
+    <%- include('header', {NOW_TITLE:title, OG_TITLE:title,OG_DESC:desc, OG_URL:original_url, OG_IMG:img }) %>
 <body>
     <style>
         body{
@@ -56,13 +56,13 @@ background-size: 1800% 1800%;
     <script>
         //redirect countdown
     document.addEventListener("DOMContentLoaded", ()=>{
-        var time = <%= r_time %>;
+        var time = "<%= r_time %>";
         var downloadTimer = setInterval(function(){
             if(time <= 0){ 
                 clearInterval(downloadTimer);
                 window.location.href = "<%= des_url %>"
             } 
-            document.getElementById("progressBar").innerText= "Travelling in : " + time;
+            document.getElementById("progressBar").innerText= "Travelling in : " + parseInt(time);
             time -=1; 
         }, 1000); 
     })
