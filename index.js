@@ -92,8 +92,24 @@ router.get('/add', accessCheck, (req, res) => {
 });
 
 router.post('/create', accessCheck, (req, res) => {
-    const { originalUrl, shortenUrl } = req.body;
-    redirectURL.create(originalUrl, shortenUrl, req, res);
+    const { originalUrl, shortenUrl, title, desc, img, r_time } = req.body;
+    if(!title){
+        title = "ICKURL";
+    }
+
+    if(!desc){
+        desc = "Forever free url shortener for your sharing | Made with love by ICKDEV";
+    }
+
+    if(!img){
+        img = "https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png";
+    }
+
+    if(!r_time){
+        r_time = 0;
+    }
+
+    redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
 });
 
 router.post('/delete', accessCheck, (req, res) => {
@@ -108,9 +124,9 @@ router.post('/update', accessCheck, (req, res) => {
 
 router.get('/:shortenUrl',async (req, res) => {
     const shortenUrl = req.params.shortenUrl;
-    const des_url = await redirectURL.redirect(shortenUrl, req, res);
-    if(des_url){
-        res.render('url', { des_url: des_url });
+    const data = await redirectURL.redirect(shortenUrl, req, res);
+    if(data){
+        res.render('url', { s_url:data.shorten_url,des_url: data.original_url, title: data.title, desc: data.desc, img: data.img, r_time: data.r_time });
     }else{
         res.redirect("/");
     }

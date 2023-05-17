@@ -74,6 +74,10 @@
             <tr>
                 <th>Shorten URL</th>
                 <th>Original URL</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Redirect Time</th>
                 <th>Clicked</th>
                 <th>Ads Time Spend</th>
                 <th>Created At</th>
@@ -85,6 +89,9 @@
                 <tr>
                     <td><a href="/<%= urls[i].shorten_url %>"><%= urls[i].shorten_url %></a></td>
                     <td><%= urls[i].original_url %></td>
+                    <td><%= urls[i].title %></td>
+                    <td><%= urls[i].description %></td>
+                    <td><img src="<%= urls[i].image %>" alt="urlimg" width="50px" height="50px"></td>
                   <% const adTIME = parseFloat((urls[i].adsTime/100)/60).toFixed(2) %>
                     <td><%= isNaN(urls[i].clicked) ? 0 : urls[i].clicked %></td>
                     <td><%= isNaN(adTIME) ? 0 : adTIME %> mins</td>

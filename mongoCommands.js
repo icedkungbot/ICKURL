@@ -108,7 +108,7 @@ const redirectURL = {
                 await client.close();
             }
         },
-        create:async (originalUrl, shortenUrl, req, res) => {
+        create:async (originalUrl, shortenUrl, title, desc, img,r_time, req, res) => {
             try{
                 await client.connect();
                 const isExits = await client.db("account").collection("redirect").findOne({shorten_url:shortenUrl});
@@ -124,7 +124,11 @@ const redirectURL = {
                         create_at: new Date(),
                         owner: owner,
                         clicked: 0,
-                        adsTime: 0
+                        adsTime: 0,
+                        title: title,
+                        desc: desc,
+                        img: img,
+                        r_time: r_time
                     }
                     await client.db("account").collection("redirect").insertOne(newShortenUrl);
                     console.log(`Shorten URL : ${shortenUrl} has created!`);
@@ -178,7 +182,7 @@ const redirectURL = {
                         isExits.adsTime = isExits.clicked * 5;
                         await client.db("account").collection("redirect").updateOne({shorten_url:shortenUrl}, {$set:{clicked:isExits.clicked, adsTime:isExits.adsTime}});
                         console.log(`Shorten URL : ${shortenUrl} has updated!`);
-                        return isExits.original_url;
+                        return isExits;
                     }
                 }catch(err){
                     console.log(err);

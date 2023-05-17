@@ -3,12 +3,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ICKURL | ICK URL Shortener | Forever free url shortener for your sharing | Made with love by ICKDEV">
-    <meta property="og:title" content="<%= NOW_TITLE %> | ICK URL Shortener">
-    <meta property="og:url" content="https://sl.iamickdev.com/">
-    <meta property="og:description" content="Forever free url shortener for your sharing | Made with love by ICKDEV">
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png">
+    <meta property="og:title" content="<%= NOW_TITLE ? 'ICK URL' %> | ICK URL Shortener">
+    <meta property="og:url" content="<%= OG_URL ? 'https://sl.iamickdev.com/' %>">
+    <meta property="og:description" content="<%= OG_DESC ? 'Forever free url shortener for your sharing | Made with love by ICKDEV' %>">
+    <meta property="og:image" content="<%=OG_IMG ? 'https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png'%>">
     
 
-    <title><%= NOW_TITLE %> | ICKURL | URL Shortener</title>
+    <title><%= NOW_TITLE ? 'Home' %> | ICKURL | URL Shortener</title>
     <link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" type="image/x-icon">
 </head>
