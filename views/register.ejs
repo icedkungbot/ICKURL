@@ -38,6 +38,7 @@
             text-decoration: underline;
         }
     </style>
+    <%-include('header_guest')%>
     <h1>Register to manage shorten url</h1>
     <p>Enter username and password to Register</p>
     <div>
@@ -52,6 +53,7 @@
     </form>
     <p><a href="/login">Already have an account, Login?</a></p>
 </div>
+<%-include('footer')%>
     <script>
         //check password and confirm password is match if not match outline of input box will be red
         document.getElementById("password_confirm").addEventListener("keyup", ()=>{

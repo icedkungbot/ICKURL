@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('header', {NOW_TITLE:"LOGIN", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
-<body>
+<body  class="dark">
     <style>
         h1,h2,p {
             text-align: center;
@@ -44,6 +44,7 @@
             width: 50%;
         }
     </style>
+    <%- include('header_guest')%>
     <h1>Welcome to ICKURL</h1>
     <h2>Login to manage your shorten url</h>
     <p>Enter username and password to login</p>
@@ -58,7 +59,7 @@
     </form>
         <button id="register" onclick="goRegister()">Register here!</button>
     </div>
-    
+    <%-include('footer')%>
     <script>
         const goRegister = () =>{
             window.location.href = '/register';

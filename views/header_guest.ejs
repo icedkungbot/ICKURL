@@ -34,6 +34,10 @@
     .danger {
       background-color: rgb(2, 173, 36);
     }
+    .theme{
+      background-color: #333;
+      color:#fff;
+    }
     </style>
     </head>
     <body>
@@ -42,8 +46,26 @@
       <li><a href="/">ICKURL</a></li>
       <li style="float:right"><a class="active" href="/auth">Login</a></li>
       <li style="float:right"><a class="danger" href="/register">Register</a></li>
+      <li style="float:right"><a class="theme" id="ThemeSwitch" onclick="ThemeSwitch()">💡Light Off</a></li>
 
-    </ul>
+</ul>
+<script>
+  const myswitch = document.getElementById("ThemeSwitch");
+  const ThemeSwitch = () =>{
+      if(localStorage.getItem("theme") == 'dark'){
+        localStorage.setItem("theme", "light")
+        myswitch.innerText = "💡Light Off"
+        document.querySelector("body").classList.remove("dark");
+      }else if(localStorage.getItem("theme") == 'light'){
+        localStorage.setItem("theme", "dark")
+        myswitch.innerText = "💡Light On"
+        document.querySelector("body").classList.add("dark");
+      }else{
+        document.querySelector("body").classList.remove("dark");
+      }
+  }
+  ThemeSwitch()
+</script>
     
     
     

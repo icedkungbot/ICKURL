@@ -47,6 +47,7 @@
     </style>
 
 <body>
+    <%- include('header_guest')%>
     <div>
     <h1>Your shorten URL Created : <%= data.shorten_url %></h1>
     <label for="org">Original URL</label><br>
@@ -55,6 +56,7 @@
     <input type="url" name="srt" id="srt" value="" readonly onclick="copy()">
     <br><button id="gotourl" onclick="window.location.href = window.location.origin+'/<%=data.shorten_url%>'">Go now</button>
     <button id="copynow" onclick="copy()">Copy</button></div>
+    <%-include('footer')%>
     <script>
         document.getElementById("srt").value = window.location.origin+ "/<%=data.shorten_url%>"
         const copy = () =>{

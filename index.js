@@ -71,7 +71,8 @@ router.get("/logout", (req, res) => {
     const user = req.session.user;
     req.session = req.session.destroy();
     console.log(`User : ${user} has logged out!!`)
-    res.redirect("/auth");
+    res.redirect("/");
+    res.end();
 })
 
 const accessCheck = (req, res, next) =>{
@@ -191,12 +192,18 @@ router.post('/update', accessCheck, (req, res) => {
 });
 
 router.get('/:shortenUrl',async (req, res) => {
-    const shortenUrl = req.params.shortenUrl;
-    const data = await redirectURL.redirect(shortenUrl, req, res);
+    
+    try{
+        const shortenUrl = req.params.shortenUrl;
+        const data = await redirectURL.redirect(shortenUrl, req, res);
     if(data){
         res.render('url', { s_url:data.shorten_url,des_url: data.original_url, title: data.title, desc: data.desc, img: data.img, r_time: data.r_time });
     }else{
-        res.redirect("/");
+        res.render("add_guest");
+    }
+    }catch(err){
+        console.log(err);
+        res.render("add_guest");
     }
 });
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('header', {NOW_TITLE:"ADD", OG_TITLE:"ADD",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
-<body>
+<body class="dark">
     <style>
         h2 {
             text-align: center;
@@ -35,7 +35,7 @@
             margin: 4px 2px;
             cursor: pointer;
         }
-        #checkbox1{
+        #checkbox1, #optionalCheck{
             background-color: white;
             border: none;
             color: white;
@@ -43,38 +43,125 @@
             text-decoration: none;
             margin: 4px 2px;
             cursor: pointer;
+        }#title, #desc, #img{
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }#optional{
+            display:none;
+            width: 100%;
+            text-align: center;
+            align-items: center;
         }
         
     </style>
     <%- include('header_login') %>
-
-    <h2>Add new url</h2>
     <form action="/create" method="post">
         <label for="originalUrl">Original URL</label>
-        <input type="url" name="originalUrl" id="originalUrl" required>
-        <label for="r_time">Redirect time (second Default:0)</label>
-        <input type="number" name="r_time" id="r_time" value="0" min="0" max="5">
-        <label for="shortenUrl">Shorten URL</label>
-        <input type="text" maxlength="12" name="shortenUrl" id="shortenUrl" required>
-        <input type="checkbox" id="checkbox1"><span>Random</span>
+        <input type="url" name="originalUrl" id="originalUrl" placeholder="Enter the URL that you want to short it here!" required>
+        <div><label for="r_time">Redirect time (second) : </label>
+        <input type="number" name="r_time" id="r_time" value="0" min="0" max="5" placeholder="waiting time in second <Default is : 0>"></div>
+        <label for="shortenUrl">Shorten URL (<input type="checkbox" id="checkbox1"><span>Random</span>)</label>
+        <input type="text" maxlength="12" name="shortenUrl" id="shortenUrl" placeholder="Customize your short URL <Max : 12 Character>" required>
         
         <!-- display how short url will be -->
         <input type="url" name="futureURL" id="futureURL" value="" hidden readonly>        
         
+        <br><br>
+        <h4>URL Preview</h4>
+        <div id="previewURL" style="display:flex; flex-direction:row; background-color: antiquewhite; border:5px; border-radius: 20px; padding: 15px; margin-top:10px">
+            <img id="imgPreview" src="https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" alt="preview_url" width="100"  style="object-fit: cover; border-radius: 5px;">
+            <div style="margin-left:20px;">
+                <a href="#" id="previewLink"><h3 id="titlePreview">ICK URL | Shorten URL</h3></a>
+                <p id="descPreview">Forever free url shortener for your sharing | Made with love by ICKDEV</p>
+            </div>
+        </div>
         
-        <h2>Custom URL Preview (Optional)</h2>
-        <label for="title">URL Title</label>
-        <input type="text" name="title" id="title">
-        <label for="desc">URL Description</label>
-        <input type="text" name="desc" id="desc">
-        <label for="img">URL Image Link</label>
-        <input type="url" name="img" id="img">
+        <h2>Custom URL Preview (Optional)<input type="checkbox" name="optionalCheck" id="optionalCheck"></h2> 
+        <div id="optional" style="color:#333">
+            <label for="title">URL Title</label>
+            <input type="text" name="title" id="title" placeholder="Customize your URL Title here!">
+            <label for="desc">URL Description</label>
+            <input type="text" name="desc" id="desc" placeholder="Customize your URL Description here!">
+            <label for="img">URL Image Link</label>
+            <input type="url" name="img" id="img" placeholder="Customize your URL Image here!">
+        </div>
+        
 
         <input type="submit" value="Create URL">
     </form>
-
+    <%-include('footer')%>
     <script>
         //paste clipboard to input when click on input
+        let short = "";
+        let now = "";
+
+        //display future url update every time when user type in input shorten url
+        const shortHandler = () => {
+            if (document.getElementById("shortenUrl").value == "") {
+                document.getElementById("futureURL").hidden = true;
+            }else{
+                document.getElementById("futureURL").hidden = false;
+                document.getElementById("futureURL").value = window.location.origin + "/" + document.getElementById("shortenUrl").value;
+                document.getElementById("previewLink").href = window.location.origin + "/" + document.getElementById("shortenUrl").value;
+                if(short != document.getElementById("shortenUrl").value){
+                    document.getElementById("checkbox1").checked = false;
+                }
+            
+            }
+        }
+
+        const optionalHandler = () =>{ 
+            const optionalBox = document.getElementById("optional");
+            const optionalCheck = document.getElementById("optionalCheck");
+            const title = document.getElementById("title");
+            const desc = document.getElementById("desc");
+            const img = document.getElementById("img");
+            
+            if(optionalCheck.checked == true){
+                optionalBox.style.display = 'flex';
+                optionalBox.style.flexDirection = 'column';
+            }else{
+                optionalBox.style.display = 'none';
+                title.value = "";
+                desc.value = "";
+                img.value = "";
+            }
+        }
+
+        const previewHandler = () =>{
+            const optionalCheck = document.getElementById("optionalCheck");
+            const title = document.getElementById("title");
+            const desc = document.getElementById("desc");
+            const img = document.getElementById("img");
+            const titlePreview = document.getElementById("titlePreview");
+            const descPreview = document.getElementById("descPreview");
+            const imgPreview = document.getElementById("imgPreview");
+            if(optionalCheck){
+                if(title.value == ""){
+                titlePreview.innerText = "ICK URL | Shorten URL";
+                }else{
+                    titlePreview.innerText = title.value;
+                }
+                if(desc.value == ""){
+                    descPreview.innerText = "Forever free url shortener for your sharing | Made with love by ICKDEV";
+                }else{
+                    descPreview.innerText = desc.value;
+                }
+                if(img.value == ""){
+                    imgPreview.src = "https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png"
+                }else{
+                    imgPreview.src = img.value
+                }
+            }else{
+                titlePreview.innerText = "ICK URL | Shorten URL";
+                descPreview.innerText = "Forever free url shortener for your sharing | Made with love by ICKDEV";
+                imgPreview.src = "https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png"
+            }
+
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
         try{
             const permission = await navigator.permissions.query({
@@ -99,15 +186,7 @@
         }
         });
 
-        //display future url update every time when user type in input shorten url
-        const shortHandler = () => {
-            if (document.getElementById("shortenUrl").value == "") {
-                document.getElementById("futureURL").hidden = true;
-            }else{
-                document.getElementById("futureURL").hidden = false;
-            document.getElementById("futureURL").value = window.location.origin + "/" + document.getElementById("shortenUrl").value;
-            }
-        }
+        
                //generate random key
         document.getElementById("checkbox1").addEventListener("change", (event)=>{
         //create random short url link
@@ -117,17 +196,29 @@
             for (var i = 0, n = charset.length; i < 5; ++i) { random +=charset.charAt(Math.floor(Math.random() * n)); }
                 document.getElementById("shortenUrl").value = random;
                 document.getElementById("shortenUrl").readonly = true;
+                short = random;
                 shortHandler();
             }else{
-                document.getElementById("shortenUrl").value = "";
+                //document.getElementById("shortenUrl").value = "";
                 document.getElementById("checkbox1").checked = false;
                 document.getElementById("shortenUrl").readonly = false;
                 shortHandler();
             }
         })
-        document.getElementById("shortenUrl").addEventListener("keyup", shortHandler,false);
-        document.getElementById("shortenUrl").addEventListener("change", shortHandler,false);
+
+        document.getElementById("shortenUrl").addEventListener("keyup", shortHandler, false);
+        document.getElementById("shortenUrl").addEventListener("change", shortHandler, false);
+        document.getElementById("optionalCheck").addEventListener("change", optionalHandler, false);
+        document.getElementById("optionalCheck").addEventListener("change", previewHandler, false);
+        document.getElementById("title").addEventListener("change", previewHandler, false);
+        document.getElementById("title").addEventListener("keyup", previewHandler, false);
+        document.getElementById("desc").addEventListener("change", previewHandler, false);
+        document.getElementById("desc").addEventListener("keyup", previewHandler, false);
+        document.getElementById("img").addEventListener("change", previewHandler, false);
+        document.getElementById("img").addEventListener("keyup", previewHandler, false);
         
+
+        document.getElementById("optionalCheck").checked = false;
     </script>
 </body>
 </html>
