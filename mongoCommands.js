@@ -5,7 +5,6 @@ require('dotenv').config();
 // Replace the uri string with your connection string.
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
 const bcrypt = require('bcrypt');
 const saltRound = parseInt(process.env.SALTROUND) || 10;
 
@@ -17,7 +16,7 @@ const User = {
             const isExits = await client.db("account").collection("user").findOne({username:username});
             if(isExits != null){
                 return res.json({status:"err", msg:"Username is already exits!"})
-            //check is this username is exits return err
+            //check is this username is exits
             }else{
                 const allUser = await client.db("account").collection("user").find({}).toArray();
                 const hashPassword = bcrypt.hashSync(password, saltRound);

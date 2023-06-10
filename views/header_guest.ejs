@@ -58,11 +58,12 @@
       <li><a href="/">ICKURL</a></li>
       <li style="float:right"><a class="active" href="/auth">Login</a></li>
       <li style="float:right"><a class="danger" href="/register">Register</a></li>
-      <li style="float:right"><button class="theme" id="ThemeSwitch" onclick="ThemeSwitch()">💡Light Off</button></li>
+      <li style="float:right"><button class="theme" id="ThemeSwitch">💡Light On</button></li>
 
 </ul>
 <script>
   const myswitch = document.getElementById("ThemeSwitch");
+  localStorage.setItem("theme","dark");
   const ThemeSwitch = () =>{
       if(localStorage.getItem("theme") == 'dark'){
         localStorage.setItem("theme", "light")
@@ -77,6 +78,7 @@
       }
   }
   ThemeSwitch()
+  document.getElementById("ThemeSwitch").addEventListener("click", ThemeSwitch, false);
 </script>
     
     
