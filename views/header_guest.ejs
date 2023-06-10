@@ -24,6 +24,18 @@
     li a:hover:not(.active) {
       background-color: #111;
     }
+    li button {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      border: none;
+    }
+    
+    li button:hover:not(.active) {
+      background-color: #111;
+    }
     
     .active {
       background-color: #ffc107;
@@ -46,7 +58,7 @@
       <li><a href="/">ICKURL</a></li>
       <li style="float:right"><a class="active" href="/auth">Login</a></li>
       <li style="float:right"><a class="danger" href="/register">Register</a></li>
-      <li style="float:right"><a class="theme" id="ThemeSwitch" href="javascript:void(0)" onclick="ThemeSwitch()">💡Light Off</a></li>
+      <li style="float:right"><button class="theme" id="ThemeSwitch" onclick="ThemeSwitch()">💡Light Off</button></li>
 
 </ul>
 <script>
