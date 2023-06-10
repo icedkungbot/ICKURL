@@ -45,6 +45,10 @@ router.get('/', (req, res, next) => {
     () => {if(req.session.access) return res.redirect('/view');}
 });
 
+router.get('/healthz', (req,res)=>{
+    return res.status(200).json({status:"ok", msg:"Server is running!"});
+})
+
 router.get('/auth', (req, res, next) => {
     console.log("index");
     res.render('index');
