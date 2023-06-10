@@ -115,7 +115,7 @@ const redirectURL = {
                 if(isExits != null){
                     return res.json({status:"err", msg:"Shorten URL is already exits!"})
                 }else{
-                    const owner = req.session.user;
+                    const owner = req.session.user || "guest_ickurl";
                     const OwnURL = await client.db("account").collection("redirect").find({owner:owner}).toArray();
                     const newShortenUrl = {
                         id: OwnURL.length + 1 + owner,
@@ -132,7 +132,7 @@ const redirectURL = {
                     }
                     await client.db("account").collection("redirect").insertOne(newShortenUrl);
                     console.log(`Shorten URL : ${shortenUrl} has created!`);
-                    res.redirect("/view")
+                    return true;
                 }
             }catch(err){
                 console.log(err);

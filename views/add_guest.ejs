@@ -46,10 +46,9 @@
         }
         
     </style>
-    <%- include('header_login') %>
-
+    <%- include('header_guest')%>
     <h2>Add new url</h2>
-    <form action="/create" method="post">
+    <form action="/create_guest" method="post">
         <label for="originalUrl">Original URL</label>
         <input type="url" name="originalUrl" id="originalUrl" required>
         <label for="r_time">Redirect time (second Default:0)</label>

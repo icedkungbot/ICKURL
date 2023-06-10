@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('header', {NOW_TITLE:"Preview | "+data.shorten_url, OG_TITLE:"Preview | "+data.shorten_url,OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-top: 10px;
+        }
+        input[type=url] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        #copynow {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #gotourl{
+            background-color: #bf9721;
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+    </style>
+
+<body>
+    <div>
+    <h1>Your shorten URL Created : <%= data.shorten_url %></h1>
+    <label for="org">Original URL</label><br>
+    <input type="url" name="org" id="org" value="<%=data.original_url%>" readonly onclick="copy()">
+    <br><label for="srt">Shorten URL</label><br>
+    <input type="url" name="srt" id="srt" value="" readonly onclick="copy()">
+    <br><button id="gotourl" onclick="window.location.href = window.location.origin+'/<%=data.shorten_url%>'">Go now</button>
+    <button id="copynow" onclick="copy()">Copy</button></div>
+    <script>
+        document.getElementById("srt").value = window.location.origin+ "/<%=data.shorten_url%>"
+        const copy = () =>{
+            const id = "copynow"
+            var copyText = window.location.origin+ "/<%=data.shorten_url%>";
+            navigator.clipboard.writeText(copyText);
+            console.log(id)
+            console.log(copyText);
+            //change copy color and text after click
+            document.getElementById(id).style.backgroundColor = "#008CBA";
+            document.getElementById(id).innerHTML = "Copied";
+            //change back after 5 sec
+            setTimeout(() => {
+                document.getElementById(id).style.backgroundColor = "#36f465";
+                document.getElementById(id).innerHTML = "Copy";
+            }, 3000);
+        
+        }
+    </script>
+</body>
+</html>

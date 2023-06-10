@@ -61,14 +61,16 @@
         }
         
     </style>
+    <%- include('header_login', {username:username}) %>
     <div class="headerbar">
+        
         <h2>Welcome, <b><%= username %></b></h2>
-        <button id="logout" onclick="logout()">Logout</button>
+        <!-- <button id="logout" onclick="logout()">Logout</button> -->
     </div>
 
-    <form action="/add">
+    <!-- <form action="/add">
         <input type="submit" id="add" value="Add new url">
-    </form>
+    </form> -->
     <table>
         <thead>
             <tr>

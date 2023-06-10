@@ -40,6 +40,13 @@ const { User, redirectURL } = require('./mongoCommands');
 
 router.get('/', (req, res, next) => {
     console.log("index");
+    res.render('add_guest');
+    next();
+    () => {if(req.session.access) return res.redirect('/view');}
+});
+
+router.get('/auth', (req, res, next) => {
+    console.log("index");
     res.render('index');
     next();
     () => {if(req.session.access) return res.redirect('/view');}
@@ -64,7 +71,7 @@ router.get("/logout", (req, res) => {
     const user = req.session.user;
     req.session = req.session.destroy();
     console.log(`User : ${user} has logged out!!`)
-    res.redirect("/");
+    res.redirect("/auth");
 })
 
 const accessCheck = (req, res, next) =>{
@@ -72,7 +79,7 @@ const accessCheck = (req, res, next) =>{
     if(access){
         next();
     }else{
-        res.redirect('/');
+        res.redirect('/auth');
     }
 }
 
@@ -87,11 +94,23 @@ router.get('/view', accessCheck, (req, res) => {
     });
 });
 
+router.get('/preview/:shortenUrl', async(req, res) => {
+    const url = req.params.shortenUrl || 'not found';
+    console.log("URL => ", url)
+    if(url != 'not found'){
+        const data = await redirectURL.viewByShorten(url);
+        console.log("Preview data => ", data)
+        res.render('preview', {data:data[0]});
+    }else{
+        res.render('add_guess');
+    }
+});
+
 router.get('/add', accessCheck, (req, res) => {
    res.render('add');
 });
 
-router.post('/create', accessCheck, (req, res) => {
+router.post('/create', accessCheck,async (req, res) => {
     const { originalUrl, shortenUrl } = req.body;
     let title;
     let desc;
@@ -122,7 +141,43 @@ router.post('/create', accessCheck, (req, res) => {
         r_time = req.body.r_time;
     }
 
-    redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
+    await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
+    res.redirect('/view')
+});
+
+router.post('/create_guest', async (req, res) => {
+    const { originalUrl, shortenUrl } = req.body;
+    let title;
+    let desc;
+    let img;
+    let r_time;
+    
+    if(!req.body.title){
+        title = "ICKURL";
+    }else{
+        title = req.body.title;
+    }
+
+    if(!req.body.desc){
+        desc = "Forever free url shortener for your sharing | Made with love by ICKDEV";
+    }else{
+        desc = req.body.desc;
+    }
+
+    if(!req.body.img){
+        img = "https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png";
+    }else{
+        img = req.body.img;
+    }
+
+    if(!req.body.r_time){
+        r_time = 0;
+    }else{
+        r_time = req.body.r_time;
+    }
+
+    await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
+    res.redirect(`/preview/${shortenUrl}`)
 });
 
 router.post('/delete', accessCheck, (req, res) => {
