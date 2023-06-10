@@ -47,17 +47,15 @@ background-size: 1800% 1800%;
             border-radius: 10px;
         }
     </style>
-    <div class="center">
-        <h1>ICKURL</h1>
-        <h2>You are on the way! </h2>
-        <p id="progressBar">Traveling in : </p>
-        <iframe src="<%= des_url %>" frameborder="0"></iframe>
-    </div>
     <script>
         //redirect countdown
     document.addEventListener("DOMContentLoaded", ()=>{
         var time = "<%= r_time %>";
-        var downloadTimer = setInterval(function(){
+        if(time == 0){
+            window.location.href = "<%= des_url %>"
+        }
+        else{
+            var downloadTimer = setInterval(function(){
             if(time <= 0){ 
                 clearInterval(downloadTimer);
                 window.location.href = "<%= des_url %>"
@@ -65,8 +63,16 @@ background-size: 1800% 1800%;
             document.getElementById("progressBar").innerText= "Travelling in : " + parseInt(time);
             time -=1; 
         }, 1000); 
+        }
     })
         
     </script>
+    <div class="center">
+        <h1>ICKURL</h1>
+        <h2>You are on the way! </h2>
+        <p id="progressBar">Traveling in : </p>
+        <iframe src="<%= des_url %>" frameborder="0"></iframe>
+    </div>
+    
 </body>
 </html>
