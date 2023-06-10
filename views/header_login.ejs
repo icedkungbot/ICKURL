@@ -43,7 +43,6 @@ li a:hover:not(.active) {
 </ul>
 <script>
   const myswitch = document.getElementById("ThemeSwitch");
-  localStorage.setItem("theme","dark");
   const ThemeSwitch = () =>{
       if(localStorage.getItem("theme") == 'dark'){
         localStorage.setItem("theme", "light")
@@ -60,7 +59,6 @@ li a:hover:not(.active) {
         console.log("💡Light On!");
       }
   }
-  ThemeSwitch()
   document.getElementById("ThemeSwitch").addEventListener("click", ThemeSwitch, false);
 </script>
 
