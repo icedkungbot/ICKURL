@@ -38,7 +38,7 @@ li a:hover:not(.active) {
   <li><a href="/add">Add</a></li>
   <li><a href="/view">View My URL</a></li>
   <li style="float:right"><a class="danger" href="/logout">Logout</a></li>
-  <li style="float:right"><a class="theme" id="ThemeSwitch" onclick="ThemeSwitch()">💡Light Off</a></li>
+  <li style="float:right"><a class="theme" id="ThemeSwitch" href="javascript:void(0)" onclick="ThemeSwitch()">💡Light Off</a></li>
 
 </ul>
 <script>
@@ -46,14 +46,17 @@ li a:hover:not(.active) {
   const ThemeSwitch = () =>{
       if(localStorage.getItem("theme") == 'dark'){
         localStorage.setItem("theme", "light")
+        console.log("💡Light On!");
         myswitch.innerText = "💡Light Off"
         document.querySelector("body").classList.remove("dark");
       }else if(localStorage.getItem("theme") == 'light'){
         localStorage.setItem("theme", "dark")
         myswitch.innerText = "💡Light On"
         document.querySelector("body").classList.add("dark");
+        console.log("💡Light Off!");
       }else{
         document.querySelector("body").classList.remove("dark");
+        console.log("💡Light On!");
       }
   }
   ThemeSwitch()
