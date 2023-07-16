@@ -27,11 +27,13 @@ const User = {
                 }
                 await client.db("account").collection("user").insertOne(newUser);
                 console.log(`User : ${username} has registered!`);
-                res.redirect("/")
+                // res.redirect("/")
+                res.status(200).json({status:"success", msg:"Register success!"})
             }    
             // perform actions on the collection object
         }catch(err){
             console.log(err);
+            res.json({status:"err", msg:"Something went wrong!"});
         }finally{
             client.close();
         }
@@ -48,13 +50,14 @@ const User = {
                     console.log(req.session);
                     req.session.access = true;
                     req.session.user = username;
-                    return res.redirect("/view")
+                    return res.json({status:"success", msg:"Login success!"})
                 }else{
                     return res.json({status:"err", msg:"Password is not correct!"})
                 }
             }
         }catch(err){
             console.log(err);
+            res.json({status:"err", msg:"Something went wrong!"});
         }finally{
             await client.close();
         }

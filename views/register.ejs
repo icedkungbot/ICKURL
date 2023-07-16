@@ -49,12 +49,58 @@
         <input type="password" name="password" id="password">
         <label for="password">Confirm Password</label>
         <input type="password" name="password_confirm" id="password_confirm">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG"></div>
         <input type="button" value="Register" onclick="submit()" id="register_but" hidden>
     </form>
     <p><a href="/login">Already have an account, Login?</a></p>
 </div>
 <%-include('footer')%>
     <script>
+        //submit form
+        document.getElementById("regisform").addEventListener("submit", (e)=>{
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const password_confirm = document.getElementById("password_confirm").value;
+            if(password==password_confirm){
+                $.ajax({
+                    url: "/createuser",
+                    type: "POST",
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function(data){
+                        if(data=="success"){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Register Success',
+                                text: 'You can login now',
+                                confirmButtonText: 'OK'
+                            }).then((result)=>{
+                                if(result.isConfirmed){
+                                    window.location.href = "/auth";
+                                }
+                            })
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Register Failed',
+                                text: data.msg,
+                                confirmButtonText: 'Try again!'
+                            })
+                        }
+                    }
+                })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Register Failed',
+                    text: 'Password and Confirm Password not match',
+                    confirmButtonText: 'OK'
+                })
+            }
+        });
         //check password and confirm password is match if not match outline of input box will be red
         document.getElementById("password_confirm").addEventListener("keyup", ()=>{
             var p = document.getElementById("password");

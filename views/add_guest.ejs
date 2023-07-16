@@ -58,7 +58,7 @@
         
     </style>
     <%- include('header_guest')%>
-    <form action="/create_guest" method="post">
+    <form action="/create_guest" id="formGuest" method="post">
         <label for="originalUrl">Original URL</label>
         <input type="url" name="originalUrl" id="originalUrl" placeholder="Enter the URL that you want to short it here!" required>
         <div><label for="r_time">Redirect time (second) : </label>
@@ -97,6 +97,55 @@
         //paste clipboard to input when click on input
         let short = "";
         let now = "";
+
+        const form = document.getElementById("formGuest");
+        form.addEventListener("submit", (event)=>{
+            event.preventDefault();
+            const originalUrl = document.getElementById("originalUrl").value;
+            const shortenUrl = document.getElementById("shortenUrl").value;
+            const futureURL = document.getElementById("futureURL").value;
+            const r_time = document.getElementById("r_time").value;
+            const optionalCheck = document.getElementById("optionalCheck").checked;
+            const title = document.getElementById("title").value;
+            const desc = document.getElementById("desc").value;
+            const img = document.getElementById("img").value;
+            const data = {originalUrl:originalUrl, shortenUrl:shortenUrl, futureURL:futureURL, r_time:r_time, optionalCheck:optionalCheck, title:title, desc:desc, img:img};
+            console.log(data);
+            fetch("/create_guest", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Success:", data);
+                    if(data.status == "success"){
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Your URL has been shorten!',
+                            icon: 'success',
+                            confirmButtonText: 'Cool!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const url = window.location.origin + "/preview/" + data.shortenUrl;
+                                window.location.href = url;
+                            }
+                        })
+                    }else{
+                        Swal.fire({
+                            title: 'Error Please Try again!',
+                            text: data.msg,
+                            icon: 'error',
+                            confirmButtonText: 'Try again!'
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        })
 
         //display future url update every time when user type in input shorten url
         const shortHandler = () => {

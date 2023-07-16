@@ -146,8 +146,14 @@ router.post('/create', accessCheck,async (req, res) => {
         r_time = req.body.r_time;
     }
 
-    await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
-    res.redirect('/view')
+    try{
+        await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
+    res.status(200).json({status:"success", msg:"URL has been shorten!", shortenUrl:shortenUrl});
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({status:"err", msg:"Something went wrong!"});
+    }
 });
 
 router.post('/create_guest', async (req, res) => {
@@ -180,9 +186,15 @@ router.post('/create_guest', async (req, res) => {
     }else{
         r_time = req.body.r_time;
     }
-
-    await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
-    res.redirect(`/preview/${shortenUrl}`)
+    try{
+        await redirectURL.create(originalUrl, shortenUrl,title, desc, img ,r_time , req, res);
+        // res.redirect(`/preview/${shortenUrl}`)
+        res.status(200).json({status:"success", msg:"URL has been shorten!", shortenUrl:shortenUrl});
+    
+    }catch(err){
+        console.log(err);
+        res.status(500).json({status:"err", msg:"Something went wrong!"});
+    }
 });
 
 router.post('/delete', accessCheck, (req, res) => {

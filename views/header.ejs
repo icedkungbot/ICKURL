@@ -15,6 +15,12 @@
     <% if(!NOW_TITLE){NOW_TITLE = 'Home'} %>
     <title><%= NOW_TITLE %> | ICKURL | URL Shortener</title>
     <link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" type="image/x-icon">
+    <!-- import jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- import sweetalert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- import cloudflare turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
         .dark{
