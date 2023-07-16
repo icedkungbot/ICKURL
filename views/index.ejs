@@ -54,7 +54,7 @@
         <input type="text" name="username" id="username">
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG" data-callback="turnstileCallback"></div>
+        <div id="TurnstileRender"></div>
         <input type="submit" value="Login">
         
     </form>
@@ -129,12 +129,14 @@
             }
         })
 
-        const goRegister = () =>{
-            window.location.href = '/register';
-        }
-        //user ajax to send login to server and wait for response
-        const ajaxOpt ={
-            
+        function _turnstileCb() {
+        console.debug('_turnstileCb called');
+
+        turnstile.render('#TurnstileRender', {
+        sitekey: '0x4AAAAAAAHb0iP60h_mGmIG',
+        theme: 'auto',
+        callback: turnstileCallback,
+        });
         }
     </script>
 </body>

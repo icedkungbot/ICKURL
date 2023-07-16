@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('header', {NOW_TITLE:"REGISTER", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
-<body  class="dark">
+    
+    <body  class="dark">
     <style>
         h1,h2,p {
             text-align: center;
@@ -56,7 +57,7 @@
         <input type="password" name="password" id="password" placeholder="Enter your password here!">
         <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password again!">
 
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG" data-callback="turnstileCallback"></div>
+        <div id="TurnstileRender"></div>
         <input id="register_but" type="submit" value="Register" hidden>
         
     </form>
@@ -169,6 +170,15 @@
                 but.hidden = true;
             }
         })
+
+        function _turnstileCb() {
+        console.debug('_turnstileCb called');
+
+        turnstile.render('#TurnstileRender', {
+        sitekey: '0x4AAAAAAAHb0iP60h_mGmIG',
+        theme: 'auto',
+        callback: turnstileCallback,
+        })};
     </script>
 </body>
 </html>
