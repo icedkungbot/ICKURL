@@ -57,6 +57,7 @@
         <a href="/auth">Already have an account? Login here!</a>
     </div>
     <%-include('footer')%>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
     <script>
         let isVerified = false;
         let pwMatched = false;

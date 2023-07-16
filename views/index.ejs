@@ -65,6 +65,7 @@
         <button id="register" onclick="goRegister()">Register here!</button>
     </div>
     <%-include('footer')%>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
     <script>
         let isVerified = false;
         const turnstileCallback = function(token) {

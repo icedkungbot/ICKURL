@@ -98,6 +98,8 @@
         let short = "";
         let now = "";
 
+        
+
         const form = document.getElementById("formGuest");
         form.addEventListener("submit", (event)=>{
             event.preventDefault();
@@ -232,17 +234,7 @@
             }
             console.log(clipboardContents)
 
-            if(window.location.pathname != "/"){
-                document.getElementById("shortenUrl").value = window.location.pathname.substring(1);
-                short = window.location.pathname.substring(1);
-                shortHandler();
-                Swal.fire({
-                    title: 'URL not found!',
-                    text: `Create new one with this short url : ${window.location.pathname.substring(1)}`,
-                    icon: 'error',
-                    confirmButtonText: `Let's go!`
-                })
-            }
+            
         }catch{
             console.log("Permission Error")
         }
@@ -281,6 +273,19 @@
         
 
         document.getElementById("optionalCheck").checked = false;
+
+
+        if(window.location.pathname != "/"){
+                document.getElementById("shortenUrl").value = window.location.pathname.substring(1);
+                short = window.location.pathname.substring(1);
+                shortHandler();
+                Swal.fire({
+                    title: 'URL not found!',
+                    text: `Create new one with this short url : ${window.location.pathname.substring(1)}`,
+                    icon: 'error',
+                    confirmButtonText: `Let's go!`
+                })
+            }
     </script>
 </body>
 </html>
