@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('header', {NOW_TITLE:"LOGIN", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
+<body  class="dark">
+    <style>
+        h1,h2,p {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=password] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 50%;
+        }
+        #register {
+            background-color: #ffc107;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 50%;
+        }
+    </style>
+    <%- include('header_guest')%>
+    <h1>Welcome to ICKURL</h1>
+    <h2>Login to manage your shorten url</h>
+    <p>Enter username and password to login</p>
+    <div class="formStyle">
+    <form action="/login" id="loginForm" method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG" data-callback="turnstileCallback"></div>
+        <input type="submit" value="Login">
+        
+    </form>
+        <button id="register" onclick="goRegister()">Register here!</button>
+    </div>
+    <%-include('footer')%>
+    <script>
+        let isVerified = false;
+        const turnstileCallback = function(token) {
+            isVerified = true;
+        };
+
+
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            if(!isVerified){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Register Failed',
+                    text: 'Please verify you are not a robot',
+                    confirmButtonText: 'OK'
+                })
+                return;
+            }
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if(username == '' || password == ''){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the field!',
+                })
+            }else{
+                Swal.fire({
+                    title: 'Please wait',
+                    html: 'We are logging you in',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function(res){
+                        if(res.status == 'success'){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Login success',
+                                text: 'Redirecting you to dashboard',
+                                didOpen: () => {
+                                    Swal.showLoading()
+                                },
+                            })
+                            setTimeout(()=>{
+                                window.location.href = '/view';
+                            }, 2000)
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: res.msg,
+                            })
+                        }
+                    }
+                })
+            }
+        })
+
+        const goRegister = () =>{
+            window.location.href = '/register';
+        }
+        //user ajax to send login to server and wait for response
+        const ajaxOpt ={
+            
+        }
+    </script>
+</body>
+</html>
