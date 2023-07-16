@@ -75,7 +75,6 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
             const password_confirm = document.getElementById("password_confirm").value;
-            if(password==password_confirm){
                 Swal.fire({
                     title: 'Please wait',
                     html: 'We are registering your account',
@@ -114,14 +113,6 @@
                         }
                     }
                 })
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Register Failed',
-                    text: 'Password and Confirm Password not match',
-                    confirmButtonText: 'OK'
-                })
-            }
         });
         //check password and confirm password is match if not match outline of input box will be red
         document.getElementById("password_confirm").addEventListener("keyup", ()=>{
