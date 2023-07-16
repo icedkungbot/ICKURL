@@ -231,6 +231,18 @@
                     document.getElementById("originalUrl").placeholder = "Paste your url here!";
             }
             console.log(clipboardContents)
+
+            if(window.location.pathname != "/"){
+                document.getElementById("shortenUrl").value = window.location.pathname.substring(1);
+                short = window.location.pathname.substring(1);
+                shortHandler();
+                Swal.fire({
+                    title: 'URL not found!',
+                    text: `Create new one with this short url : ${window.location.pathname.substring(1)}`,
+                    icon: 'error',
+                    confirmButtonText: `Let's go!`
+                })
+            }
         }catch{
             console.log("Permission Error")
         }
