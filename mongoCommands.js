@@ -28,7 +28,7 @@ const User = {
                 await client.db("account").collection("user").insertOne(newUser);
                 console.log(`User : ${username} has registered!`);
                 // res.redirect("/")
-                res.status(200).json({status:"success", msg:"Register success!"})
+                res.json({status:"success", msg:"Register success!"})
             }    
             // perform actions on the collection object
         }catch(err){

@@ -62,10 +62,24 @@
     </div>
     <%-include('footer')%>
     <script>
+        let isVerified = false;
+        const turnstileCallback = function(token) {
+            isVerified = true;
+        };
+
 
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', (e)=>{
             e.preventDefault();
+            if(!isVerified){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Register Failed',
+                    text: 'Please verify you are not a robot',
+                    confirmButtonText: 'OK'
+                })
+                return;
+            }
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             if(username == '' || password == ''){
