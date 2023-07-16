@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('header', {NOW_TITLE:"LOGIN", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
+    <%- include('header', {NOW_TITLE:"REGISTER", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
 <body  class="dark">
     <style>
         h1,h2,p {
@@ -51,10 +51,10 @@
     <div class="formStyle">
     <form action="/createuser" id="regisForm" method="post">
         <label for="username">Username</label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" id="username" placeholder="Enter your username">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-        <input type="password" name="confirm_password" id="confirm_password">
+        <input type="password" name="password" id="password" placeholder="Enter your password here!">
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password again!">
 
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG" data-callback="turnstileCallback"></div>
         <input id="register_but" type="submit" value="Register" hidden>
@@ -65,8 +65,12 @@
     <%-include('footer')%>
     <script>
         let isVerified = false;
+        let pwMatched = false;
         const turnstileCallback = function(token) {
             isVerified = true;
+            if(pwMatched){
+                document.getElementById('register_but').hidden = false;
+            }
         };
 
 
@@ -103,7 +107,7 @@
             }else{
                 Swal.fire({
                     title: 'Please wait',
-                    html: 'We are logging you in',
+                    html: 'We are registering your account',
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading()
@@ -121,13 +125,13 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Login success',
-                                text: 'Redirecting you to dashboard',
+                                text: 'Redirecting you to login',
                                 didOpen: () => {
                                     Swal.showLoading()
                                 },
                             })
                             setTimeout(()=>{
-                                window.location.href = '/view';
+                                window.location.href = '/auth';
                             }, 2000)
                         }else{
                             Swal.fire({
@@ -148,11 +152,17 @@
             if(p.value==cp.value){
                 p.style.borderColor = "green";
                 cp.style.borderColor = "green";
-                but.hidden = false;
+                pwMatched = true;
+                if(isVerified){
+                    but.hidden = false;
+                }else{
+                    but.hidden = true
+                }
             }else{
                 p.style.borderColor = "red";
                 cp.style.borderColor = "red";
-                but.hidden = true
+                pwMatched = false;
+                but.hidden = true;
             }
         })
     </script>
