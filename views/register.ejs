@@ -67,6 +67,7 @@
         let isVerified = false;
         let pwMatched = false;
         const turnstileCallback = function(token) {
+            console.log(token);
             isVerified = true;
             if(pwMatched){
                 document.getElementById('register_but').hidden = false;
@@ -158,6 +159,9 @@
                 }else{
                     but.hidden = true
                 }
+                console.log("matched");
+                console.log(pwMatched);
+                console.log(isVerified);
             }else{
                 p.style.borderColor = "red";
                 cp.style.borderColor = "red";
