@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('header', {NOW_TITLE:"REGISTER", OG_TITLE:"REGISTER",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
-<body>
+    <%- include('header', {NOW_TITLE:"LOGIN", OG_TITLE:"LOGIN",OG_DESC:"Forever free url shortener for your sharing | Made with love by ICKDEV", OG_URL:"https://sl.iamickdev.com", OG_IMG:"https://cdn.discordapp.com/attachments/885089951207804949/907257498069794856/Ickstaycoding.png" }) %>
+<body  class="dark">
     <style>
-        h1,p {
+        h1,h2,p {
             text-align: center;
         }
         form {
@@ -23,45 +23,55 @@
             margin: 8px 0;
             box-sizing: border-box;
         }
-        input[type=button] {
+        input[type=submit] {
             background-color: #4CAF50;
             border: none;
-            width: 50%;
             color: white;
             padding: 5px 10px;
             text-decoration: none;
             margin: 4px 2px;
             cursor: pointer;
+            width: 50%;
         }
-        a{
-            color:black;
-            text-decoration: underline;
+        #register {
+            background-color: #ffc107;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 50%;
         }
     </style>
-    <%-include('header_guest')%>
-    <h1>Register to manage shorten url</h1>
+    <%- include('header_guest')%>
+    <h1>Welcome to ICKURL</h1>
+    <h2>Register to manage shorten url</h>
     <p>Enter username and password to Register</p>
-    <div>
-    <form id="regisform" action="/createuser" method="post">
+    <div class="formStyle">
+    <form action="/createuser" id="regisForm" method="post">
         <label for="username">Username</label>
         <input type="text" name="username" id="username">
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
-        <label for="password">Confirm Password</label>
-        <input type="password" name="password_confirm" id="password_confirm">
+        <input type="password" name="confirm_password" id="confirm_password">
+
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHb0iP60h_mGmIG" data-callback="turnstileCallback"></div>
-        <input type="button" value="Register" onclick="submit()" id="register_but" hidden>
+        <input id="register_but" type="submit" value="Register" hidden>
+        
     </form>
-    <p><a href="/login">Already have an account, Login?</a></p>
-</div>
-<%-include('footer')%>
+        <a href="/auth">Already have an account? Login here!</a>
+    </div>
+    <%-include('footer')%>
     <script>
-        //submit form
         let isVerified = false;
         const turnstileCallback = function(token) {
             isVerified = true;
         };
-        document.getElementById("regisform").addEventListener("submit", (e)=>{
+
+
+        const regisForm = document.getElementById('regisForm');
+        regisForm.addEventListener('submit', (e)=>{
             e.preventDefault();
             if(!isVerified){
                 Swal.fire({
@@ -72,52 +82,68 @@
                 })
                 return;
             }
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            const password_confirm = document.getElementById("password_confirm").value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            if(password != confirm_password){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Register Failed',
+                    text: 'Password and confirm password does not match',
+                    confirmButtonText: 'OK'
+                })
+                return;
+            }
+            if(username == '' || password == ''){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill in all the field!',
+                })
+            }else{
                 Swal.fire({
                     title: 'Please wait',
-                    html: 'We are registering your account',
+                    html: 'We are logging you in',
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading()
                     },
                 })
                 $.ajax({
-                    url: "/createuser",
-                    type: "POST",
+                    url: '/createuser',
+                    type: 'POST',
                     data: {
                         username: username,
                         password: password
                     },
-                    success: function(data){
-                        if(data=="success"){
+                    success: function(res){
+                        if(res.status == 'success'){
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Register Success',
-                                text: 'Redirecting to login page',
+                                title: 'Login success',
+                                text: 'Redirecting you to dashboard',
                                 didOpen: () => {
                                     Swal.showLoading()
                                 },
                             })
                             setTimeout(()=>{
-                                window.location.href = '/auth';
+                                window.location.href = '/view';
                             }, 2000)
                         }else{
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Register Failed',
-                                text: data.msg,
-                                confirmButtonText: 'Try again!'
+                                title: 'Oops...',
+                                text: res.msg,
                             })
                         }
                     }
                 })
-        });
-        //check password and confirm password is match if not match outline of input box will be red
-        document.getElementById("password_confirm").addEventListener("keyup", ()=>{
+            }
+        })
+
+        document.getElementById("confirm_password").addEventListener("keyup", ()=>{
             var p = document.getElementById("password");
-            var cp = document.getElementById("password_confirm");
+            var cp = document.getElementById("confirm_password");
             var but = document.getElementById("register_but");
             if(p.value==cp.value){
                 p.style.borderColor = "green";
