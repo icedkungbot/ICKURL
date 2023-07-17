@@ -177,6 +177,8 @@ const redirectURL = {
         },
         redirect:async (shortenUrl, username, req, res) => {
                 try{
+                    let path = ["login", "auth", "register", "createuser", "healthz", "view", "add", "create", "create_guest", "delete", "update"];
+                    if(path.includes(shortenUrl)) return console.log(`App path resolve : ${shortenUrl}, Disable redirect!`);
                     await client.connect();
                     const isExits = await client.db("account").collection("redirect").findOne({shorten_url:shortenUrl});
                     if(isExits == null){
