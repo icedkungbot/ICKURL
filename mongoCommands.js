@@ -28,12 +28,12 @@ const User = {
                 await client.db("account").collection("user").insertOne(newUser);
                 console.log(`User : ${username} has registered!`);
                 // res.redirect("/")
-                res.json({status:"success", msg:"Register success!"})
+                return res.json({status:"success", msg:"Register success!"})
             }    
             // perform actions on the collection object
         }catch(err){
             console.log(err);
-            res.json({status:"err", msg:"Something went wrong!"});
+            return res.json({status:"err", msg:"Something went wrong!"});
         }finally{
             client.close();
         }
@@ -50,14 +50,14 @@ const User = {
                     console.log(req.session);
                     req.session.access = true;
                     req.session.user = username;
-                    res.json({status:"success", msg:"Login success!"})
+                    return res.json({status:"success", msg:"Login success!"})
                 }else{
-                    res.json({status:"err", msg:"Password is not correct!"})
+                    return res.json({status:"err", msg:"Password is not correct!"})
                 }
             }
         }catch(err){
             console.log(err);
-            res.json({status:"err", msg:"Something went wrong!"});
+            return res.json({status:"err", msg:"Something went wrong!"});
         }finally{
             await client.close();
         }
@@ -149,7 +149,7 @@ const redirectURL = {
                 const owner = req.session.user;
                 await client.db("account").collection("redirect").deleteOne({shorten_url:shortenUrl, owner:owner});
                 console.log(`Shorten URL : ${shortenUrl} has deleted!`);
-                res.redirect("/view")
+                return res.redirect("/view")
             }catch(err){
                 console.log(err);
             }finally{
@@ -166,7 +166,7 @@ const redirectURL = {
                 }else{
                     await client.db("account").collection("redirect").updateOne({shorten_url:shortenUrl, owner:owner}, {$set:{shorten_url:newShortenUrl}});
                     console.log(`Shorten URL : ${shortenUrl} has updated!`);
-                    res.redirect("/view")
+                    return res.redirect("/view")
                 }
             }catch(err){
                 console.log(err);
