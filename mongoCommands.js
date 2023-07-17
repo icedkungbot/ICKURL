@@ -50,9 +50,9 @@ const User = {
                     console.log(req.session);
                     req.session.access = true;
                     req.session.user = username;
-                    return res.json({status:"success", msg:"Login success!"})
+                    res.json({status:"success", msg:"Login success!"})
                 }else{
-                    return res.json({status:"err", msg:"Password is not correct!"})
+                    res.json({status:"err", msg:"Password is not correct!"})
                 }
             }
         }catch(err){
